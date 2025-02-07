@@ -1,0 +1,85 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <title>GeoJSONLayer | Sample | ArcGIS Maps SDK for JavaScript 4.31</title>
+      
+        <style>
+          html,
+          body,
+          #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+          }
+      
+        </style>
+
+<link rel="stylesheet" href="https://js.arcgis.com/4.31/esri/themes/light/main.css" />
+<script src="https://js.arcgis.com/4.31/"></script>
+
+<script>
+  require(["esri/Map", "esri/layers/GeoJSONLayer", "esri/views/MapView"], (
+    Map,
+    GeoJSONLayer,
+    MapView) => {
+        const geojsonUrl = "map.geojson";
+        const template = {
+        title: "Megacities",
+        content:  `
+          <table>
+        
+            <tr><th>City</th><td>{City}</td></tr>
+            <tr><th colspan="2">Population by Year</th></tr>
+            <tr><th>1985</th><td>{Pop_1985}</td></tr>
+            <tr><th>1990</th><td>{Pop_1990}</td></tr>
+            <tr><th>1995</th><td>{Pop_1995}</td></tr>
+            <tr><th>2000</th><td>{Pop_2000}</td></tr>
+            <tr><th>2005</th><td>{Pop_2005}</td></tr>
+            <tr><th>2010</th><td>{Pop_2010}</td></tr>
+            <tr><th>2015</th><td>{Pop_2015}</td></tr>
+          
+          </table>
+        `,
+      };
+
+      const renderer = {
+        type: "simple",
+        field: "Place",
+        symbol: {
+          type: "simple-marker",
+          color: "blue",
+          outline: {
+            color: "black",
+          }
+        }
+      };
+
+      const geojsonLayer = new GeoJSONLayer({
+        url: geojsonUrl,
+        renderer: renderer,
+        popupTemplate: template,
+     
+      });
+
+      const map = new Map({
+        basemap: "streets",
+        layers: [geojsonLayer]
+      });
+
+      const view = new MapView({
+        container: "viewDiv",
+        center: [0, 0],
+        zoom: 2,
+        map: map
+      });
+  });
+</script>
+</head>
+
+<body>
+  <div id="viewDiv"></div>
+</body>
+
+</html>
